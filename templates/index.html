@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-wrapper text-center">
+    <h1 class="display-4 mb-4">
+        <i class="bi bi-shield-check text-primary"></i> ClassShield
+    </h1>
+    <p class="lead text-muted mb-4">School Content Safety System (NSFW Detector Prototype)<br><small>Powered By AnveshAI</small></p>
+    
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto">
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle-fill"></i> <strong>Purpose:</strong> This is a demonstration prototype built for educational purposes to showcase responsible AI implementation in school safety contexts.
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="display-6 text-primary mb-3"><i class="bi bi-cpu"></i></div>
+                    <h5>Local ML Model</h5>
+                    <p class="text-muted">NudeNet classifier for primary detection</p>
+                    <span class="badge {% if local_model %}bg-success{% else %}bg-warning{% endif %}">
+                        {% if local_model %}Active{% else %}Loading...{% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="display-6 text-info mb-3"><i class="bi bi-cloud-check"></i></div>
+                    <h5>Cloud Fallback</h5>
+                    <p class="text-muted">Sightengine API for validation</p>
+                    <span class="badge bg-info">Secondary Layer</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="display-6 text-success mb-3"><i class="bi bi-people"></i></div>
+                    <h5>Human Review</h5>
+                    <p class="text-muted">Admin oversight required</p>
+                    <span class="badge bg-success">No Auto-Delete</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-upload"></i> Test the System</h5>
+                    <p class="card-text">Upload an image to see how the content safety detection works with full explainability.</p>
+                    <a href="/upload" class="btn btn-primary">
+                        <i class="bi bi-image"></i> Upload & Scan
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-kanban"></i> Admin Dashboard</h5>
+                    <p class="card-text">View flagged content, review decisions, and manage the moderation queue.</p>
+                    <a href="/admin" class="btn btn-warning">
+                        <i class="bi bi-gear"></i> Admin Panel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="mb-3">Key Ethical AI Features</h4>
+        </div>
+        <div class="col-md-3">
+            <i class="bi bi-shield-check text-success display-6"></i>
+            <p class="mt-2"><strong>Privacy First</strong><br>No image storage</p>
+        </div>
+        <div class="col-md-3">
+            <i class="bi bi-graph-up text-primary display-6"></i>
+            <p class="mt-2"><strong>Transparent</strong><br>Full explainability</p>
+        </div>
+        <div class="col-md-3">
+            <i class="bi bi-check-circle text-info display-6"></i>
+            <p class="mt-2"><strong>Bias Tested</strong><br>Fairness metrics</p>
+        </div>
+        <div class="col-md-3">
+            <i class="bi bi-book text-warning display-6"></i>
+            <p class="mt-2"><strong>Educational</strong><br>Student safety focus</p>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="/ethical-ai" class="btn btn-outline-primary me-2">View Ethical AI Policy</a>
+        <a href="/submission" class="btn btn-outline-secondary">Submission Package</a>
+    </div>
+</div>
+{% endblock %}

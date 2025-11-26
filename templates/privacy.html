@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h2 class="mb-4"><i class="bi bi-lock-fill"></i> Privacy & Safety Guarantees</h2>
+    
+    <div class="alert alert-info">
+        <i class="bi bi-shield-check-fill"></i> ClassShield (Powered By AnveshAI) is built with privacy-first principles and complies with student data protection regulations including FERPA and COPPA.
+    </div>
+
+    <h4 class="mt-4">Privacy Guarantees</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-hourglass-split text-primary"></i> 1. In-Memory Processing Only</h5>
+            <p><strong>Images are processed entirely in memory and are NOT permanently stored on our servers.</strong></p>
+            <ul>
+                <li>Images uploaded for scanning are held in temporary memory during analysis</li>
+                <li>Once the scan completes, the image data is immediately discarded</li>
+                <li>No image files are written to disk or permanent storage</li>
+                <li>Processing time: typically 2-5 seconds per image</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-hash text-success"></i> 2. Hash-Based Audit Trails</h5>
+            <p>For accountability without compromising privacy, we use cryptographic hashing:</p>
+            <ul>
+                <li>Each image generates a unique SHA-256 hash (one-way function)</li>
+                <li>Hashes stored for audit purposes, NOT original images</li>
+                <li>Impossible to reconstruct the image from the hash</li>
+                <li>Enables duplicate detection without storing images</li>
+            </ul>
+            <p class="text-muted small">Example hash: <code>a3d5c8f9e1b2d4c7f6a8e9b3d1c5f7a9...</code></p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-database text-info"></i> 3. Minimal Metadata Storage</h5>
+            <p>Only essential metadata is retained:</p>
+            <ul>
+                <li>Image hash (cryptographic fingerprint)</li>
+                <li>Timestamp of scan</li>
+                <li>Decision result (safe/suspect/harmful)</li>
+                <li>Detection confidence scores</li>
+                <li>Review status and actions taken</li>
+            </ul>
+            <p><strong>NOT stored:</strong> Student names, user IDs, IP addresses, or any personally identifiable information</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-cloud-slash text-warning"></i> 4. Third-Party API Protection</h5>
+            <p>When using cloud services (Sightengine) as a fallback:</p>
+            <ul>
+                <li>Images sent to Sightengine are not retained by them per their privacy policy</li>
+                <li>No student metadata sent with images</li>
+                <li>Local model prioritized to minimize cloud usage</li>
+                <li>Schools can disable cloud fallback if required by policy</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Safety Guarantees</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-people text-primary"></i> 1. No Automated Content Removal</h5>
+            <ul>
+                <li>System NEVER automatically deletes or blocks student content</li>
+                <li>All flagged items require human administrator review</li>
+                <li>False positives cannot cause accidental data loss</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-journal-text text-success"></i> 2. Complete Audit Logging</h5>
+            <ul>
+                <li>All scan events logged with timestamps</li>
+                <li>All admin actions (approve/reject) recorded</li>
+                <li>Audit trail available for compliance review</li>
+                <li>Tamper-evident logging system</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-file-earmark-lock text-info"></i> 3. Data Retention Policy</h5>
+            <ul>
+                <li><strong>Images:</strong> Never stored (in-memory only)</li>
+                <li><strong>Metadata & hashes:</strong> Retained for 90 days, then auto-deleted</li>
+                <li><strong>Audit logs:</strong> Retained for 1 year for compliance</li>
+                <li><strong>Admin actions:</strong> Retained per school policy requirements</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Compliance & Rights</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>Student Rights</h5>
+            <ul>
+                <li><strong>Right to explanation:</strong> Students can request details on why content was flagged</li>
+                <li><strong>Right to appeal:</strong> All decisions can be appealed to school administrators</li>
+                <li><strong>Right to access:</strong> Students can request their scan history (metadata only)</li>
+                <li><strong>Right to deletion:</strong> Students can request deletion of their scan metadata</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>Regulatory Compliance</h5>
+            <ul>
+                <li><strong>FERPA:</strong> Compliant with student education record protections</li>
+                <li><strong>COPPA:</strong> No personal information collected from students under 13</li>
+                <li><strong>State Privacy Laws:</strong> Designed to meet stringent state requirements</li>
+                <li><strong>Data Breach Notification:</strong> Protocols in place per applicable laws</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Parent & Guardian Rights</h4>
+    <p>Parents and guardians have the right to:</p>
+    <ul>
+        <li>Review the system's operation and privacy practices</li>
+        <li>Opt their student out of automated scanning (if school policy allows)</li>
+        <li>Request access to any flagged content involving their student</li>
+        <li>File complaints regarding privacy concerns</li>
+    </ul>
+
+    <div class="alert alert-success mt-4">
+        <i class="bi bi-check-circle-fill"></i> <strong>Our Commitment:</strong> We will never sell, share, or use student data for advertising or commercial purposes. This system exists solely to protect student safety.
+    </div>
+
+    <p class="mt-4">
+        <a href="/ethical-ai" class="btn btn-outline-primary">Ethical AI Policy</a>
+        <a href="/disclaimer" class="btn btn-outline-warning">Legal Disclaimer</a>
+        <a href="/deployment" class="btn btn-outline-secondary">Deployment Guidelines</a>
+    </p>
+</div>
+{% endblock %}

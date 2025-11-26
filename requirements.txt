@@ -1,0 +1,17 @@
+flask
+requests
+Pillow
+nudenet
+opencv-python-headless
+numpy
+gunicorn
+flask
+gunicorn
+nudenet
+numpy
+opencv-python-headless
+Pillow
+requests
+reportlab
+selenium
+webdriver-manager

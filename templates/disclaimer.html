@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h2 class="mb-4"><i class="bi bi-exclamation-triangle"></i> Legal & Safety Disclaimer</h2>
+    
+    <div class="alert alert-warning">
+        <i class="bi bi-info-circle-fill"></i> <strong>Important:</strong> This is a prototype demonstration system. Please read these disclaimers carefully before deployment.
+    </div>
+
+    <h4 class="mt-4">System Limitations</h4>
+    
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-bug text-danger"></i> 1. Not 100% Accurate</h5>
+            <p><strong>This system WILL make mistakes.</strong> Like all AI systems, it is not perfect:</p>
+            <ul>
+                <li><strong>False Positives:</strong> Innocent content may be incorrectly flagged as inappropriate (estimated 5-15% depending on content type)</li>
+                <li><strong>False Negatives:</strong> Some inappropriate content may not be detected (estimated 3-8% based on testing)</li>
+                <li><strong>Context Blindness:</strong> AI cannot understand context like humans can</li>
+                <li><strong>Edge Cases:</strong> Unusual or ambiguous content may produce unpredictable results</li>
+            </ul>
+            <p class="mb-0 text-danger"><strong>Critical:</strong> Never rely solely on this system. Human oversight is essential.</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-shield-exclamation text-warning"></i> 2. Prototype Status</h5>
+            <p>This is a <strong>demonstration prototype</strong> built for educational and evaluation purposes:</p>
+            <ul>
+                <li>Not tested in real-world school environments at scale</li>
+                <li>May contain bugs or unexpected behaviors</li>
+                <li>Performance metrics based on controlled testing, not production use</li>
+                <li>Requires additional hardening for production deployment</li>
+                <li>Third-party dependencies (NudeNet, Sightengine) may change or become unavailable</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-image text-info"></i> 3. Content Type Limitations</h5>
+            <p>Known categories with higher error rates:</p>
+            <ul>
+                <li><strong>Beach/Pool Photos:</strong> Swimwear often triggers false positives (up to 15%)</li>
+                <li><strong>Medical Content:</strong> Educational anatomy images frequently flagged incorrectly</li>
+                <li><strong>Artistic Content:</strong> Figure drawings, sculptures, classical art misidentified</li>
+                <li><strong>Sports/Athletics:</strong> Athletic wear can confuse detection algorithms</li>
+                <li><strong>Cultural Dress:</strong> Traditional clothing from various cultures may be misinterpreted</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Proper Use Guidelines</h4>
+
+    <div class="card mb-3 border-success">
+        <div class="card-body">
+            <h5 class="text-success"><i class="bi bi-check-circle"></i> Appropriate Uses</h5>
+            <ul>
+                <li>As an <strong>assistive tool</strong> to help moderators identify potentially problematic content</li>
+                <li>To <strong>flag content for review</strong>, not to make final decisions</li>
+                <li>As part of a <strong>multi-layered safety approach</strong></li>
+                <li>For <strong>educational purposes</strong> to demonstrate AI safety concepts</li>
+                <li>With <strong>proper staff training</strong> and oversight protocols</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3 border-danger">
+        <div class="card-body">
+            <h5 class="text-danger"><i class="bi bi-x-circle"></i> Inappropriate Uses</h5>
+            <ul>
+                <li><strong>Sole basis for disciplinary action</strong> against students</li>
+                <li><strong>Automatic content removal</strong> without human review</li>
+                <li><strong>Mass surveillance</strong> of student content</li>
+                <li><strong>Punishment-focused</strong> rather than education-focused implementation</li>
+                <li><strong>Without clear policies</strong> and appeals processes</li>
+                <li><strong>In lieu of proper staff training</strong> and digital citizenship education</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Required Preconditions for Deployment</h4>
+    <div class="card mb-3">
+        <div class="card-body">
+            <p>Before deploying this system, schools MUST have:</p>
+            <ol>
+                <li><strong>Clear Policies:</strong> Written acceptable use policies explaining content rules</li>
+                <li><strong>Trained Staff:</strong> Administrators trained on AI limitations and review protocols</li>
+                <li><strong>Student Education:</strong> Programs teaching digital citizenship and safety</li>
+                <li><strong>Parent Communication:</strong> Parents informed about the system's use and limitations</li>
+                <li><strong>Appeal Process:</strong> Clear procedures for students to contest decisions</li>
+                <li><strong>Privacy Protections:</strong> Compliance with FERPA, COPPA, and state privacy laws</li>
+                <li><strong>Regular Audits:</strong> Ongoing monitoring for bias and accuracy</li>
+                <li><strong>Legal Review:</strong> Attorney review of implementation plans</li>
+            </ol>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Liability & Responsibility</h4>
+    <div class="alert alert-danger">
+        <i class="bi bi-exclamation-octagon-fill"></i> <strong>Important Notice:</strong>
+        <p class="mt-2">The developers of this prototype system:</p>
+        <ul class="mb-0">
+            <li>Make NO warranties, express or implied, about system accuracy or fitness for purpose</li>
+            <li>Are NOT responsible for decisions made based on system outputs</li>
+            <li>Are NOT liable for damages resulting from false positives or false negatives</li>
+            <li>Recommend consultation with legal counsel before deployment</li>
+            <li>Require schools to assume full responsibility for implementation and consequences</li>
+        </ul>
+    </div>
+
+    <h4 class="mt-4">Third-Party Services</h4>
+    <div class="card mb-3">
+        <div class="card-body">
+            <p>This system uses third-party services that have their own terms and limitations:</p>
+            <ul>
+                <li><strong>NudeNet:</strong> Open-source model with its own accuracy limitations and license terms</li>
+                <li><strong>Sightengine:</strong> Commercial API subject to their terms of service, pricing, and availability</li>
+            </ul>
+            <p class="mb-0">Schools must separately evaluate and accept the terms of these third-party services.</p>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Data & Privacy Disclaimers</h4>
+    <div class="card mb-3">
+        <div class="card-body">
+            <ul>
+                <li>While images are processed in memory, <strong>no system is 100% secure</strong></li>
+                <li>Network interception or server compromise could expose image data</li>
+                <li>Metadata and hashes, while privacy-preserving, still constitute data collection</li>
+                <li>Third-party APIs (Sightengine) receive image data per their privacy policy</li>
+                <li>Schools must conduct their own privacy impact assessments</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Ethical Considerations</h4>
+    <div class="card mb-3">
+        <div class="card-body">
+            <p>Schools deploying this system should consider:</p>
+            <ul>
+                <li>The psychological impact of surveillance on students</li>
+                <li>The potential for chilling effects on free expression</li>
+                <li>The burden placed on already-marginalized students</li>
+                <li>The balance between safety and privacy</li>
+                <li>The educational vs. punitive framing of the system</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Recommended Alternatives & Supplements</h4>
+    <p>This system works best when combined with:</p>
+    <ul>
+        <li><strong>Comprehensive digital citizenship curriculum</strong></li>
+        <li><strong>Open communication channels</strong> between students and trusted adults</li>
+        <li><strong>Restorative justice practices</strong> rather than purely punitive responses</li>
+        <li><strong>Ongoing staff training</strong> on child safety and appropriate responses</li>
+        <li><strong>Student voice and participation</strong> in safety policy development</li>
+    </ul>
+
+    <div class="alert alert-info mt-4">
+        <i class="bi bi-lightbulb-fill"></i> <strong>Best Practice:</strong> Technology should support, not replace, human relationships and education in creating safe school environments.
+    </div>
+
+    <h4 class="mt-4">Contact & Support</h4>
+    <p>For questions about this disclaimer or the system:</p>
+    <ul>
+        <li>Review the <a href="/ethical-ai">Ethical AI Policy</a></li>
+        <li>Read the <a href="/deployment">Deployment Plan</a></li>
+        <li>Consult with legal counsel before implementation</li>
+        <li>Contact the development team with technical questions</li>
+    </ul>
+
+    <p class="mt-4">
+        <a href="/ethical-ai" class="btn btn-outline-primary">Ethical AI Policy</a>
+        <a href="/privacy" class="btn btn-outline-info">Privacy Guarantees</a>
+        <a href="/deployment" class="btn btn-outline-warning">Deployment Plan</a>
+    </p>
+</div>
+{% endblock %}

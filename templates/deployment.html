@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h2 class="mb-4"><i class="bi bi-rocket"></i> School Deployment Plan</h2>
+    
+    <div class="alert alert-success">
+        <i class="bi bi-check-circle-fill"></i> This comprehensive deployment guide helps schools implement ClassShield (Powered By AnveshAI) safely and effectively.
+    </div>
+
+    <h4 class="mt-4">Phase 1: Pre-Deployment (4-6 weeks)</h4>
+    
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-list-check text-primary"></i> Technical Setup Checklist</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Server Infrastructure:</strong> Set up server with Python 3.11+, 4GB+ RAM
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Install Dependencies:</strong> Flask, NudeNet, OpenCV, Pillow, NumPy, Requests, Gunicorn
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Configure Secrets:</strong> Set up SIGHTENGINE_API_USER and SIGHTENGINE_API_SECRET
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Network Configuration:</strong> Configure firewall, SSL/TLS certificates
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Test Installation:</strong> Run system tests and verify all models load correctly
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Backup Systems:</strong> Set up automated backups and disaster recovery
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-file-text text-info"></i> Policy & Legal Preparation</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Legal Review:</strong> Attorney review of implementation plans and policies
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Privacy Impact Assessment:</strong> Complete FERPA/COPPA compliance review
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Acceptable Use Policy Update:</strong> Update AUP to include AI content moderation
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Appeal Process:</strong> Create clear procedures for contesting decisions
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Staff Protocols:</strong> Document review procedures and escalation paths
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> <strong>Board Approval:</strong> Present to school board for approval
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Phase 2: Staff Training (2-3 weeks)</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-person-workspace text-success"></i> Administrator Training Program</h5>
+            <p><strong>Required Training Topics (8 hours minimum):</strong></p>
+            <ol>
+                <li><strong>AI Literacy (1 hour):</strong> How AI works, what it can and cannot do</li>
+                <li><strong>System Operation (2 hours):</strong> How to use the admin dashboard, review queue, audit logs</li>
+                <li><strong>Understanding Results (1.5 hours):</strong> Interpreting confidence scores, evidence, and thresholds</li>
+                <li><strong>Bias Awareness (1.5 hours):</strong> Recognizing and mitigating AI bias</li>
+                <li><strong>Privacy & Ethics (1 hour):</strong> FERPA compliance, student privacy rights</li>
+                <li><strong>Scenario Practice (1 hour):</strong> Reviewing sample cases and making decisions</li>
+            </ol>
+            
+            <p class="mt-3"><strong>Training Materials Provided:</strong></p>
+            <ul>
+                <li>Training manual and quick reference guides</li>
+                <li>Video tutorials for system operation</li>
+                <li>Practice scenarios with answer keys</li>
+                <li>Flowcharts for decision-making</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-people text-warning"></i> Staff Training Checklist</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> Train all administrators who will review flagged content
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> Train backup reviewers for coverage
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> Train IT staff on system maintenance
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> Train counselors on supporting students through review process
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> Conduct role-playing scenarios
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" disabled> Assess competency through quiz/certification
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Phase 3: Community Communication (2-3 weeks)</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-megaphone text-info"></i> Parent & Guardian Communication</h5>
+            <p><strong>Communication Templates:</strong></p>
+            
+            <div class="alert alert-light border">
+                <h6>Sample Parent Letter:</h6>
+                <p class="small mb-0">Dear Parents and Guardians,<br><br>
+                As part of our ongoing commitment to student safety, [School Name] will be implementing an AI-assisted content safety system starting [Date]. This tool helps us identify potentially inappropriate images in student-submitted work, protecting our school community.<br><br>
+                <strong>Important Points:</strong><br>
+                • The AI is an assistive tool only - trained staff make all final decisions<br>
+                • Your student's privacy is protected - images are not stored<br>
+                • False flags can happen - all reviews consider context<br>
+                • Students can appeal any decisions<br><br>
+                For more information, please visit [Website] or contact [Administrator] at [Email/Phone].<br><br>
+                Sincerely,<br>
+                [School Administration]
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-chat-square-text text-primary"></i> Student Education Program</h5>
+            <p><strong>Curriculum Components (2-3 class periods):</strong></p>
+            <ul>
+                <li><strong>Digital Citizenship:</strong> What it means to be safe and responsible online</li>
+                <li><strong>How AI Works:</strong> Age-appropriate explanation of AI and its limitations</li>
+                <li><strong>What Gets Flagged:</strong> Examples of problematic vs. acceptable content</li>
+                <li><strong>Your Rights:</strong> Privacy protections and appeal process</li>
+                <li><strong>Q&A Session:</strong> Open forum for student questions</li>
+            </ul>
+            <p class="mb-0">See the <a href="/education">User Education Mode</a> page for detailed lesson plans.</p>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Phase 4: Pilot Program (4-6 weeks)</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-flag text-success"></i> Pilot Implementation</h5>
+            <p><strong>Recommended Pilot Approach:</strong></p>
+            <ol>
+                <li><strong>Start Small:</strong> Begin with one grade level or department</li>
+                <li><strong>Monitor Closely:</strong> Daily review of flagged items and false positive rates</li>
+                <li><strong>Collect Feedback:</strong> Surveys from students, parents, and staff</li>
+                <li><strong>Adjust Thresholds:</strong> Fine-tune sensitivity based on results</li>
+                <li><strong>Document Learnings:</strong> Track issues and solutions</li>
+                <li><strong>Weekly Reviews:</strong> Leadership team meets to assess progress</li>
+            </ol>
+            
+            <p class="mt-3"><strong>Pilot Success Metrics:</strong></p>
+            <ul>
+                <li>False positive rate below 10%</li>
+                <li>Average review time under 2 minutes per item</li>
+                <li>No significant student/parent complaints</li>
+                <li>Staff confidence in using the system</li>
+                <li>Clear documentation of procedures working</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Phase 5: Full Deployment</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-arrow-up-circle text-primary"></i> Scaling Plan</h5>
+            <ol>
+                <li><strong>Phased Rollout:</strong> Expand to additional grades/departments gradually</li>
+                <li><strong>Continuous Monitoring:</strong> Weekly review of metrics and trends</li>
+                <li><strong>Regular Training:</strong> Quarterly refreshers for staff</li>
+                <li><strong>Policy Updates:</strong> Annual review and updates of procedures</li>
+                <li><strong>Community Updates:</strong> Quarterly reports to parents and board</li>
+            </ol>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Incident Response Workflow</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-diagram-3 text-danger"></i> Handling Flagged Content</h5>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="text-success">Suspect Content (Yellow Flag)</h6>
+                    <ol>
+                        <li>Admin reviews within 24 hours</li>
+                        <li>Considers context and intent</li>
+                        <li>If appropriate: Approve and document</li>
+                        <li>If inappropriate: Educate student, possible consequence</li>
+                        <li>Log decision and reasoning</li>
+                    </ol>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-danger">Harmful Content (Red Flag)</h6>
+                    <ol>
+                        <li>Admin reviews immediately (within 1 hour)</li>
+                        <li>If false positive: Approve immediately</li>
+                        <li>If confirmed harmful: Follow discipline policy</li>
+                        <li>Involve counselor if needed</li>
+                        <li>Notify parents per policy</li>
+                        <li>Document thoroughly in audit log</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Ongoing Maintenance</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-arrow-clockwise text-info"></i> Regular Maintenance Tasks</h5>
+            
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Frequency</th>
+                        <th>Task</th>
+                        <th>Responsible Party</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Daily</td>
+                        <td>Review flagged items queue</td>
+                        <td>Trained Administrator</td>
+                    </tr>
+                    <tr>
+                        <td>Weekly</td>
+                        <td>Review audit logs, check system health</td>
+                        <td>IT Staff</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly</td>
+                        <td>Analyze metrics, false positive rates</td>
+                        <td>Leadership Team</td>
+                    </tr>
+                    <tr>
+                        <td>Quarterly</td>
+                        <td>Staff refresher training, bias audit</td>
+                        <td>Training Coordinator</td>
+                    </tr>
+                    <tr>
+                        <td>Annually</td>
+                        <td>Full system audit, policy review</td>
+                        <td>Administration + Legal</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Budget Considerations</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-currency-dollar text-warning"></i> Estimated Costs</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>One-Time</th>
+                        <th>Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Server Infrastructure</td>
+                        <td>$500-1,000</td>
+                        <td>$200-400</td>
+                    </tr>
+                    <tr>
+                        <td>Sightengine API (optional)</td>
+                        <td>-</td>
+                        <td>$0-500 (depends on volume)</td>
+                    </tr>
+                    <tr>
+                        <td>Staff Training</td>
+                        <td>$1,000-2,000</td>
+                        <td>$500 (refreshers)</td>
+                    </tr>
+                    <tr>
+                        <td>Legal Review</td>
+                        <td>$1,000-3,000</td>
+                        <td>$500</td>
+                    </tr>
+                    <tr>
+                        <td>IT Staff Time</td>
+                        <td>40 hours</td>
+                        <td>20 hours</td>
+                    </tr>
+                    <tr class="table-primary">
+                        <td><strong>Total Estimated</strong></td>
+                        <td><strong>$2,500-6,000</strong></td>
+                        <td><strong>$1,200-1,400</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Success Indicators</h4>
+    <ul>
+        <li>Low false positive rate (under 10%)</li>
+        <li>Quick review times (under 2 minutes average)</li>
+        <li>High staff confidence and satisfaction</li>
+        <li>Minimal parent complaints</li>
+        <li>Positive student feedback about education program</li>
+        <li>Successful detection of genuinely harmful content</li>
+        <li>No bias issues detected in audits</li>
+    </ul>
+
+    <div class="alert alert-success mt-4">
+        <i class="bi bi-download"></i> <strong>Download Full Deployment Guide:</strong> Complete deployment guide with templates, checklists, and training materials available in the <a href="/submission">Submission Package</a>.
+    </div>
+
+    <p class="mt-4">
+        <a href="/ethical-ai" class="btn btn-outline-primary">Ethical AI Policy</a>
+        <a href="/education" class="btn btn-outline-info">Student Education</a>
+        <a href="/disclaimer" class="btn btn-outline-warning">Legal Disclaimer</a>
+    </p>
+</div>
+{% endblock %}

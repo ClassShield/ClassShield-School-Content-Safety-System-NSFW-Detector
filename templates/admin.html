@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+    .flagged-item {
+        border-left: 4px solid #F39C12;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .flagged-item.harmful {
+        border-left-color: #E74C3C;
+    }
+    .evidence-panel {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+    .heatmap-container {
+        margin-top: 15px;
+        text-align: center;
+    }
+    .heatmap-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border: 3px solid #ddd;
+    }
+    .heatmap-legend {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        color: #666;
+    }
+    .heatmap-legend span {
+        display: inline-block;
+        margin: 0 10px;
+    }
+    .heatmap-legend .legend-block {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h2 class="mb-4"><i class="bi bi-kanban"></i> Admin Review Dashboard</h2>
+    
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> <strong>Review Protocol:</strong> All flagged content requires human review. No automatic deletions occur. Review each item carefully and make an informed decision.
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6>Total Flagged</h6>
+                <h2 id="totalFlagged">{{ flagged_count }}</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <h6>Pending Review</h6>
+                <h2 id="pendingCount">-</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <h6>Approved</h6>
+                <h2 id="approvedCount">-</h2>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <h6>Rejected</h6>
+                <h2 id="rejectedCount">-</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <button class="btn btn-primary" onclick="loadFlaggedItems()">
+            <i class="bi bi-arrow-clockwise"></i> Refresh Queue
+        </button>
+        <button class="btn btn-secondary" onclick="viewAuditLog()">
+            <i class="bi bi-journal-text"></i> View Audit Log
+        </button>
+        <a href="{{ url_for('admin_logout') }}" class="btn btn-danger float-end">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </div>
+
+    <h4 class="mt-4">Flagged Items Queue</h4>
+    <div id="flaggedQueue">
+        <p class="text-muted">Loading flagged items...</p>
+    </div>
+
+    <div id="auditLogPanel" style="display: none;" class="mt-4">
+        <h4>Recent Audit Log</h4>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Action</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody id="auditLogBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function loadFlaggedItems() {
+    try {
+        const response = await fetch('/api/flagged');
+        const items = await response.json();
+        
+        const pending = items.filter(i => i.review_status === 'pending').length;
+        const approved = items.filter(i => i.review_status === 'approved').length;
+        const rejected = items.filter(i => i.review_status === 'rejected').length;
+        
+        document.getElementById('totalFlagged').textContent = items.length;
+        document.getElementById('pendingCount').textContent = pending;
+        document.getElementById('approvedCount').textContent = approved;
+        document.getElementById('rejectedCount').textContent = rejected;
+        
+        const queue = document.getElementById('flaggedQueue');
+        if (items.length === 0) {
+            queue.innerHTML = '<p class="text-muted">No flagged items at this time.</p>';
+            return;
+        }
+        
+        queue.innerHTML = items.map(item => `
+            <div class="flagged-item ${item.decision}">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <h6>
+                            <span class="badge bg-${item.decision === 'BLOCK' ? 'danger' : item.decision === 'REVIEW' ? 'warning' : 'secondary'}">
+                                ${item.decision}
+                            </span>
+                            <span class="badge bg-${item.review_status === 'pending' ? 'secondary' : item.review_status === 'approved' ? 'success' : 'danger'}">
+                                ${item.review_status}
+                            </span>
+                            ${item.skin_ratio ? `<span class="badge bg-info">${item.skin_ratio}% skin</span>` : ''}
+                            ${item.primary_score ? `<span class="badge bg-dark">Score: ${item.primary_score}</span>` : ''}
+                        </h6>
+                        <p class="mb-2"><strong>Reason:</strong> ${item.reason}</p>
+                        <p class="mb-2 small text-muted">
+                            <i class="bi bi-hash"></i> Image Hash: <code>${item.image_hash.substring(0, 16)}...</code>
+                        </p>
+                        <p class="mb-2 small">
+                            <i class="bi bi-clock"></i> Flagged: ${new Date(item.flagged_at).toLocaleString()}
+                        </p>
+                        ${item.keywords_detected && Object.values(item.keywords_detected).some(v => v) ? `
+                            <p class="mb-2 small">
+                                <i class="bi bi-tags"></i> <strong>Contextual Flags:</strong> 
+                                ${Object.entries(item.keywords_detected).filter(([k,v]) => v).map(([k]) => k.replace('_', ' ')).join(', ')}
+                            </p>
+                        ` : ''}
+                        ${item.heatmap ? `
+                            <div class="heatmap-container">
+                                <strong><i class="bi bi-image"></i> Risk Zone Heatmap (Content Obscured):</strong>
+                                <p class="small text-muted mb-2">Image content is blurred and darkened for viewer protection</p>
+                                <img src="${item.heatmap}" alt="Risk zones heatmap">
+                                <div class="heatmap-legend">
+                                    <span><span class="legend-block" style="background: rgb(220,20,20);"></span>Red = Nudity/BLOCK</span>
+                                    <span><span class="legend-block" style="background: rgb(220,200,20);"></span>Yellow = Uncertain/REVIEW</span>
+                                    <span><span class="legend-block" style="background: rgb(20,200,20);"></span>Green = Safe</span>
+                                    <span><span class="legend-block" style="background: rgb(40,40,40);"></span>Dark Gray = Background</span>
+                                </div>
+                            </div>
+                        ` : ''}
+                        <div class="evidence-panel">
+                            <strong>Detection Methods:</strong> ${item.methods.join(', ')}<br>
+                            <strong>Evidence:</strong>
+                            <pre class="small mb-0 mt-2">${JSON.stringify(item.evidence, null, 2)}</pre>
+                        </div>
+                    </div>
+                    <div class="ms-3">
+                        ${item.review_status === 'pending' ? `
+                            <button class="btn btn-sm btn-success mb-2 w-100" onclick="reviewItem(${item.id}, 'approved')">
+                                <i class="bi bi-check-circle"></i> Approve
+                            </button>
+                            <button class="btn btn-sm btn-danger w-100" onclick="reviewItem(${item.id}, 'rejected')">
+                                <i class="bi bi-x-circle"></i> Reject
+                            </button>
+                        ` : `
+                            <div class="text-center mb-2">
+                                <span class="badge bg-${item.review_status === 'approved' ? 'success' : 'danger'} mb-2">
+                                    ${item.review_status === 'approved' ? 'Approved' : 'Rejected'}
+                                </span>
+                                <br>
+                                <small class="text-muted">${item.reviewed_at ? new Date(item.reviewed_at).toLocaleString() : ''}</small>
+                            </div>
+                            <button class="btn btn-sm btn-warning w-100" onclick="revokeReview(${item.id})">
+                                <i class="bi bi-arrow-counterclockwise"></i> Revoke
+                            </button>
+                        `}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading flagged items:', error);
+    }
+}
+
+async function reviewItem(itemId, action) {
+    try {
+        const response = await fetch(`/api/review/${itemId}/${action}`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        if (result.success) {
+            loadFlaggedItems();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        alert('Error reviewing item: ' + error.message);
+    }
+}
+
+async function revokeReview(itemId) {
+    if (!confirm('Are you sure you want to revoke this review? The item will be returned to the pending queue.')) {
+        return;
+    }
+    try {
+        const response = await fetch(`/api/revoke/${itemId}`, {
+            method: 'POST'
+        });
+        const result = await response.json();
+        if (result.success) {
+            loadFlaggedItems();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        alert('Error revoking review: ' + error.message);
+    }
+}
+
+async function viewAuditLog() {
+    try {
+        const response = await fetch('/api/audit');
+        const logs = await response.json();
+        
+        const panel = document.getElementById('auditLogPanel');
+        const body = document.getElementById('auditLogBody');
+        
+        body.innerHTML = logs.reverse().map(log => `
+            <tr>
+                <td class="small">${new Date(log.timestamp).toLocaleString()}</td>
+                <td><span class="badge bg-info">${log.action}</span></td>
+                <td class="small"><code>${JSON.stringify(log.details)}</code></td>
+            </tr>
+        `).join('');
+        
+        panel.style.display = 'block';
+    } catch (error) {
+        console.error('Error loading audit log:', error);
+    }
+}
+
+loadFlaggedItems();
+setInterval(loadFlaggedItems, 30000);
+</script>
+{% endblock %}

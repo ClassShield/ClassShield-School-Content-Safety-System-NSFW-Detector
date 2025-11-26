@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h2 class="mb-4"><i class="bi bi-shield-check"></i> Ethical AI Policy</h2>
+    
+    <div class="alert alert-success">
+        <i class="bi bi-check-circle-fill"></i> ClassShield (Powered By AnveshAI) is designed with ethical AI principles at its core, prioritizing student safety, privacy, and fairness.
+    </div>
+
+    <h4 class="mt-4">Core Ethical Principles</h4>
+    
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-ban text-danger"></i> 1. No Automatic Deletion</h5>
+            <p>The system <strong>NEVER</strong> automatically deletes or removes content. All flagged items are sent to a human review queue where trained administrators make final decisions. This prevents false positives from causing unintended harm.</p>
+            <ul>
+                <li>All suspect and harmful classifications trigger admin review</li>
+                <li>Students' work is preserved until human verification</li>
+                <li>Appeals process available for all decisions</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-people-fill text-primary"></i> 2. Human-in-the-Loop Decision Making</h5>
+            <p>AI serves as a tool to assist human moderators, not replace them. Trained school staff maintain final authority over all moderation decisions.</p>
+            <ul>
+                <li>Administrators review all flagged content</li>
+                <li>Context-aware decision making by humans</li>
+                <li>Educational opportunities from borderline cases</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-lock-fill text-info"></i> 3. Privacy by Design</h5>
+            <p>Student privacy is paramount. Images are processed in memory and not permanently stored unless there's an active incident requiring investigation.</p>
+            <ul>
+                <li>Images scanned in real-time without storage</li>
+                <li>Only cryptographic hashes retained for audit trails</li>
+                <li>Metadata stored with minimal personally identifiable information</li>
+                <li>Compliance with FERPA and student privacy laws</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-graph-up text-success"></i> 4. Explainability & Transparency</h5>
+            <p>Every detection decision includes detailed explanations showing which models were used, confidence scores, and thresholds applied.</p>
+            <ul>
+                <li>Clear reasoning for each decision</li>
+                <li>Confidence scores displayed for all detections</li>
+                <li>Threshold transparency</li>
+                <li>Method disclosure (local model vs. cloud API)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-globe text-warning"></i> 5. Bias Mitigation & Fairness</h5>
+            <p>The system has been tested for bias across different demographics to ensure fair treatment of all students.</p>
+            <ul>
+                <li>Tested on diverse skin tones and body types</li>
+                <li>Regular audits for disparate impact</li>
+                <li>Continuous monitoring of false positive rates by demographic</li>
+                <li>See our <a href="/bias-testing">Bias Testing Report</a> for details</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-book text-secondary"></i> 6. Educational Purpose Over Surveillance</h5>
+            <p>This system exists to protect students and create teachable moments, not to surveil them.</p>
+            <ul>
+                <li>Focus on education and safety, not punishment</li>
+                <li>Opportunities for digital citizenship education</li>
+                <li>Restorative justice approaches when appropriate</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Implementation Safeguards</h4>
+    <ul>
+        <li><strong>Multi-tier detection:</strong> Local model, cloud fallback, and heuristic methods</li>
+        <li><strong>Conservative thresholds:</strong> Designed to minimize false positives</li>
+        <li><strong>Audit logging:</strong> All actions tracked for accountability</li>
+        <li><strong>Regular review:</strong> Policy and threshold updates based on performance data</li>
+        <li><strong>Staff training:</strong> Comprehensive training for all administrators</li>
+    </ul>
+
+    <h4 class="mt-4">Limitations & Disclaimers</h4>
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle"></i> This system is NOT perfect and should be viewed as an assistive tool:
+        <ul class="mb-0 mt-2">
+            <li>False positives and false negatives will occur</li>
+            <li>Context cannot always be understood by AI</li>
+            <li>Artistic, educational, or medical content may be incorrectly flagged</li>
+            <li>Human judgment remains essential</li>
+        </ul>
+    </div>
+
+    <p class="mt-4">
+        <a href="/privacy" class="btn btn-outline-primary">Privacy & Safety Guarantees</a>
+        <a href="/bias-testing" class="btn btn-outline-info">Bias Testing Report</a>
+        <a href="/deployment" class="btn btn-outline-secondary">Deployment Plan</a>
+    </p>
+</div>
+{% endblock %}

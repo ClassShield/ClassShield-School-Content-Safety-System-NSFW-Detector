@@ -1,0 +1,249 @@
+Project Title:
+AnveshAI — School Content Safety System (NSFW Detector Prototype)
+
+Description:
+A prototype AI web service that flags potentially explicit images using a local ML model (NudeNet) and a cloud fallback (Sightengine). Built to demonstrate AI for digital safety in schools with ethical rules, admin review workflow, and privacy mode. Not auto-delete. Not production. Purpose: demo for judging.
+
+Environment Variables (set in Replit Secrets):
+SIGHTENGINE_API_USER
+SIGHTENGINE_API_SECRET
+MODERATECONTENT_KEY (optional)
+
+Run Command:
+python main.py
+
+requirements.txt:
+flask
+requests
+Pillow
+nudenet
+opencv-python-headless
+numpy
+gunicorn
+
+main.py:
+# main.py
+import os
+import io
+import time
+from flask import Flask, request, jsonify, send_file
+from PIL import Image
+import requests
+
+# Try to import local NSFW model (nudenet)
+try:
+    from nudenet import NudeClassifier
+    LOCAL_MODEL_AVAILABLE = True
+    classifier = NudeClassifier()
+except Exception as e:
+    LOCAL_MODEL_AVAILABLE = False
+    classifier = None
+    print("Local NudeNet model not available:", e)
+
+SIGHT_USER = os.getenv("SIGHTENGINE_API_USER", "")
+SIGHT_SECRET = os.getenv("SIGHTENGINE_API_SECRET", "")
+
+app = Flask(__name__)
+
+def check_with_sightengine_bytes(image_bytes):
+    if not SIGHT_USER or not SIGHT_SECRET:
+        return None  # no credentials
+    url = "https://api.sightengine.com/1.0/check.json"
+    files = {'media': ('image.jpg', image_bytes)}
+    data = {
+        'models': 'nudity-2.0,wad',
+        'api_user': SIGHT_USER,
+        'api_secret': SIGHT_SECRET
+    }
+    try:
+        resp = requests.post(url, files=files, data=data, timeout=15)
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as e:
+        print("Sightengine error:", e)
+        return None
+
+def local_nudenet_classify_bytes(image_path_or_bytes):
+    if not LOCAL_MODEL_AVAILABLE:
+        return None
+    try:
+        # NudeClassifier accepts file path or PIL.Image object
+        if isinstance(image_path_or_bytes, (bytes, bytearray)):
+            with open("temp_upload.jpg", "wb") as f:
+                f.write(image_path_or_bytes)
+            res = classifier.classify("temp_upload.jpg")
+            os.remove("temp_upload.jpg")
+        else:
+            res = classifier.classify(image_path_or_bytes)
+        return res
+    except Exception as e:
+        print("Local classifier error:", e)
+        return None
+
+@app.route("/")
+def index():
+    return jsonify({
+        "project": "AnveshAI School Safety - NSFW Detector (Prototype)",
+        "status": "ok",
+        "local_model": LOCAL_MODEL_AVAILABLE
+    })
+
+@app.route("/scan", methods=["POST"])
+def scan_image():
+    """
+    Upload form: multipart/form-data with key 'image'
+    Returns JSON:
+      - decision: safe / suspect / harmful
+      - evidence: scores / model outputs (abbreviated)
+      - action: 'review' recommended or 'safe'
+    """
+    if 'image' not in request.files:
+        return jsonify({"error": "no image file"}), 400
+
+    f = request.files['image']
+    content = f.read()
+
+    result = {
+        "timestamp": int(time.time()),
+        "methods": [],
+        "decision": "safe",
+        "reason": "",
+        "evidence": {}
+    }
+
+    # 1) Local model (preferred)
+    local = local_nudenet_classify_bytes(content)
+    if local:
+        # NudeNet returns a dict: {filename: {'unsafe':score, 'safe':score}}
+        # We summarize:
+        try:
+            # pick first entry
+            first = next(iter(local.values()))
+            unsafe_score = float(first.get("unsafe", 0))
+            safe_score = float(first.get("safe", 0))
+            result['methods'].append("local_nudenet")
+            result['evidence']['nudenet'] = {"unsafe": unsafe_score, "safe": safe_score}
+            if unsafe_score > 0.55:
+                result['decision'] = "harmful"
+                result['reason'] = "high unsafe score (local model)"
+            elif unsafe_score > 0.30:
+                result['decision'] = "suspect"
+                result['reason'] = "borderline unsafe (local model)"
+        except Exception as e:
+            print("Parsing local output error:", e)
+
+    # 2) Sightengine fallback (if configured and still ambiguous)
+    if result['decision'] == "safe" or result['decision'] == "suspect":
+        sight = check_with_sightengine_bytes(content)
+        if sight:
+            result['methods'].append("sightengine")
+            result['evidence']['sightengine'] = sight
+            # Simple rule: if sexual_activity + sexual_display high -> harmful
+            nudity = sight.get('nudity', {})
+            sexual_activity = nudity.get('sexual_activity', 0)
+            sexual_display = nudity.get('sexual_display', 0)
+            if sexual_activity + sexual_display > 0.6:
+                result['decision'] = "harmful"
+                result['reason'] = "sightengine high sexual score"
+            elif sexual_activity + sexual_display > 0.35:
+                result['decision'] = "suspect"
+                result['reason'] = "sightengine borderline sexual score"
+
+    # 3) Basic skin % heuristic (final fallback) - cautious and documented as unreliable
+    if not result['methods']:
+        try:
+            from PIL import Image
+            import numpy as np
+            im = Image.open(io.BytesIO(content)).convert('RGB')
+            arr = np.array(im)
+            # very naive skin heuristic (HSV ranges could be used)
+            h = arr.shape[0]
+            w = arr.shape[1]
+            total = h * w
+            # Quick brightness heuristic: count very bright skin-like pixels (not reliable)
+            mean_channel = arr.mean(axis=2)
+            possible_skin = (mean_channel > 120).sum()
+            skin_pct = float(possible_skin) / float(total)
+            result['methods'].append("brightness_skin_heuristic")
+            result['evidence']['skin_pct'] = skin_pct
+            if skin_pct > 0.45:
+                result['decision'] = "suspect"
+                result['reason'] = "high skin-like area (heuristic - unreliable)"
+        except Exception as e:
+            print("skin heuristic failed:", e)
+
+    # Final safety policy: never auto-delete. Always recommend review for suspect/harmful.
+    if result['decision'] == "harmful":
+        result['action'] = "block_and_send_to_admin_review"
+    elif result['decision'] == "suspect":
+        result['action'] = "send_to_admin_review"
+    else:
+        result['action'] = "allow"
+
+    # include short human-readable summary
+    result['summary'] = f"Decision: {result['decision']}. Action: {result['action']}."
+
+    return jsonify(result)
+
+if __name__ == "__main__":
+    # For Replit, bind to 0.0.0.0 and port from env
+    port = int(os.environ.get("PORT", 3000))
+    app.run(host="0.0.0.0", port=port)
+
+
+Usage:
+POST /scan with multipart form field 'image'
+Returns JSON with:
+decision = safe | suspect | harmful
+action = allow | send_to_admin_review | block_and_send_to_admin_review
+evidence = scores from models
+summary = human readable result
+
+Test command:
+curl -F "image=@/path/to/test.jpg" https://<your-replit-url>/scan
+
+Key features expected by judges:
+
+Local ML model (NudeNet)
+
+Cloud fallback (Sightengine)
+
+No auto-deletion — admin review required
+
+Privacy mode — store hashes/metadata only, not user images
+
+Explainability — show detection reason
+
+Evaluation dataset & report (accuracy, false positives, fairness tests)
+
+UI upload page (simple web form)
+
+Admin review queue (basic table)
+
+Ethics checklist:
+
+Does NOT auto-delete student content
+
+Shows review workflow
+
+Data privacy: no permanent storage unless consent
+
+Bias mitigation notes (test on different skin tones)
+
+Clear limitations declaration (false positives possible)
+
+Intended for school safety education, not surveillance
+
+Submission guidance:
+Include a short video demo (2 minutes)
+Include evaluation results (charts/tables)
+Include policy doc (1 page: privacy + review rules)
+Keep UI simple but clean
+Show logs + model output in results
+
+Success criteria (judge standpoint):
+Working scan endpoint
+Consistent decisions
+No unsafe automated deletions
+Transparent, explainable process
+Responsible AI principles demonstrated

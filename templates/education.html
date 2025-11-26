@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h2 class="mb-4"><i class="bi bi-book"></i> User Education Mode</h2>
+    
+    <div class="alert alert-info">
+        <i class="bi bi-mortarboard-fill"></i> This page helps students understand digital safety and how content moderation works.
+    </div>
+
+    <h4 class="mt-4">What Students Should Know</h4>
+    
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-shield-check text-success"></i> Why We Have Content Safety Systems</h5>
+            <p>Schools use content safety tools to:</p>
+            <ul>
+                <li>Keep everyone safe online</li>
+                <li>Prevent harmful content from spreading</li>
+                <li>Create a positive learning environment</li>
+                <li>Teach responsible digital citizenship</li>
+            </ul>
+            <p class="mb-0"><strong>Important:</strong> These systems are here to help, not to punish. If something you post gets flagged, it doesn't automatically mean you did something wrong!</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-cpu text-primary"></i> How the System Works</h5>
+            <p>When you upload an image, here's what happens:</p>
+            <ol>
+                <li><strong>AI Scans the Image:</strong> A computer program (AI) looks at the image to check if it might contain inappropriate content</li>
+                <li><strong>Confidence Score:</strong> The AI gives a confidence score (0-100%) about what it thinks it sees</li>
+                <li><strong>Three Possible Results:</strong>
+                    <ul>
+                        <li><span class="badge bg-success">Safe</span> - No concerns detected</li>
+                        <li><span class="badge bg-warning">Suspect</span> - AI isn't sure; needs human review</li>
+                        <li><span class="badge bg-danger">Harmful</span> - AI detected concerning content; needs human review</li>
+                    </ul>
+                </li>
+                <li><strong>Human Review:</strong> If flagged, a school staff member reviews it to make the final decision</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5><i class="bi bi-exclamation-triangle text-warning"></i> Why AI Isn't Perfect</h5>
+            <p>AI systems can make mistakes! Here are some things that might get incorrectly flagged:</p>
+            <ul>
+                <li><strong>Beach or Pool Photos:</strong> Swimwear is normal at the beach but might confuse the AI</li>
+                <li><strong>Medical or Science Content:</strong> Educational anatomy images might get flagged</li>
+                <li><strong>Art Projects:</strong> Artistic representations of the human form might trigger false alarms</li>
+                <li><strong>Sports Photos:</strong> Some athletic wear might be misunderstood</li>
+            </ul>
+            <p class="mb-0"><strong>That's why we have human review!</strong> A real person will look at the context and make a fair decision.</p>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Digital Safety Tips for Students</h4>
+    
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-success">
+                <div class="card-body">
+                    <h5 class="text-success"><i class="bi bi-hand-thumbs-up"></i> DO</h5>
+                    <ul>
+                        <li>Think before you share</li>
+                        <li>Ask yourself: "Would I be comfortable with my family seeing this?"</li>
+                        <li>Report concerning content to a trusted adult</li>
+                        <li>Respect others' privacy and consent</li>
+                        <li>Ask permission before posting photos of others</li>
+                        <li>Use appropriate content for school projects</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 border-danger">
+                <div class="card-body">
+                    <h5 class="text-danger"><i class="bi bi-hand-thumbs-down"></i> DON'T</h5>
+                    <ul>
+                        <li>Share images without consent from people in them</li>
+                        <li>Post or share inappropriate content</li>
+                        <li>Assume AI is always right</li>
+                        <li>Be afraid to ask for help if something gets flagged</li>
+                        <li>Share private or personal images publicly</li>
+                        <li>Use school accounts for personal photo sharing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mt-4">What Happens If Your Content Gets Flagged?</h4>
+    <div class="card mb-3">
+        <div class="card-body">
+            <ol>
+                <li><strong>Don't Panic:</strong> The AI might be wrong! Remember, it's just a computer program.</li>
+                <li><strong>Human Review:</strong> A school staff member will look at it carefully.</li>
+                <li><strong>Context Matters:</strong> They'll consider why you posted it and what it's for.</li>
+                <li><strong>You Can Explain:</strong> You'll have a chance to explain the context.</li>
+                <li><strong>Appeal Process:</strong> If you disagree with a decision, you can appeal it.</li>
+                <li><strong>Learning Opportunity:</strong> Staff will help you understand what went wrong and how to improve.</li>
+            </ol>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Your Privacy Matters</h4>
+    <div class="card mb-3 border-info">
+        <div class="card-body">
+            <h5 class="text-info"><i class="bi bi-lock"></i> How We Protect Your Privacy</h5>
+            <ul>
+                <li>Images are scanned but NOT permanently stored</li>
+                <li>Only the scan results are saved, not the actual picture</li>
+                <li>Your name is not attached to scan data</li>
+                <li>Only authorized staff can see flagged content</li>
+                <li>Everything is kept confidential</li>
+            </ul>
+        </div>
+    </div>
+
+    <h4 class="mt-4">Questions & Support</h4>
+    <div class="card mb-3">
+        <div class="card-body">
+            <p><strong>If you have questions about content safety or think something was flagged incorrectly:</strong></p>
+            <ul>
+                <li>Talk to your teacher</li>
+                <li>Speak with a school counselor</li>
+                <li>Email the IT department</li>
+                <li>Your parents/guardians can also reach out</li>
+            </ul>
+            <p class="mb-0"><strong>Remember:</strong> The goal is to keep everyone safe and help you learn, not to get you in trouble!</p>
+        </div>
+    </div>
+
+    <div class="alert alert-success mt-4">
+        <i class="bi bi-heart-fill"></i> <strong>Digital Citizenship:</strong> Being a good digital citizen means being kind, respectful, and safe online. These tools help support that mission!
+    </div>
+
+    <p class="mt-4">
+        <a href="/ethical-ai" class="btn btn-outline-primary">View Ethical AI Policy</a>
+        <a href="/privacy" class="btn btn-outline-info">Privacy Guarantees</a>
+        <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+    </p>
+</div>
+{% endblock %}

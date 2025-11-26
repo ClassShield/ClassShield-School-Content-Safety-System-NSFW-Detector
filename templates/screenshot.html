@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+
+{% block title %}Screenshot Tool - ClassShield (Powered By AnveshAI){% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">📸 Screenshot Tool</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>Capture Screenshot</h5>
+            <div class="mb-3">
+                <label for="urlInput" class="form-label">URL to Screenshot</label>
+                <input type="text" class="form-control" id="urlInput" placeholder="Enter URL (leave empty for current app)">
+            </div>
+            <button class="btn btn-primary" id="captureBtn">
+                <i class="bi bi-camera"></i> Take Screenshot
+            </button>
+        </div>
+    </div>
+
+    <div id="loadingDiv" class="alert alert-info" style="display: none;">
+        <i class="bi bi-hourglass-split"></i> Capturing screenshot...
+    </div>
+
+    <div id="resultDiv" style="display: none;">
+        <div class="card">
+            <div class="card-body">
+                <h5>Screenshot Result</h5>
+                <img id="screenshotImg" class="img-fluid rounded shadow" alt="Screenshot">
+                <div class="mt-3">
+                    <a id="downloadBtn" class="btn btn-success" download="screenshot.png">
+                        <i class="bi bi-download"></i> Download Screenshot
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorDiv" class="alert alert-danger mt-3" style="display: none;"></div>
+</div>
+
+<script>
+document.getElementById('captureBtn').addEventListener('click', async () => {
+    const url = document.getElementById('urlInput').value || window.location.origin;
+    
+    document.getElementById('loadingDiv').style.display = 'block';
+    document.getElementById('resultDiv').style.display = 'none';
+    document.getElementById('errorDiv').style.display = 'none';
+    
+    try {
+        const response = await fetch('/api/screenshot', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({url: url})
+        });
+        
+        const data = await response.json();
+        
+        document.getElementById('loadingDiv').style.display = 'none';
+        
+        if (data.success) {
+            document.getElementById('screenshotImg').src = data.screenshot;
+            document.getElementById('downloadBtn').href = data.screenshot;
+            document.getElementById('resultDiv').style.display = 'block';
+        } else {
+            document.getElementById('errorDiv').textContent = 'Error: ' + data.error;
+            document.getElementById('errorDiv').style.display = 'block';
+        }
+    } catch (error) {
+        document.getElementById('loadingDiv').style.display = 'none';
+        document.getElementById('errorDiv').textContent = 'Error: ' + error.message;
+        document.getElementById('errorDiv').style.display = 'block';
+    }
+});
+</script>
+{% endblock %}

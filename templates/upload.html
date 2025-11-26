@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .upload-zone {
+        border: 3px dashed #4A90E2;
+        border-radius: 15px;
+        padding: 50px;
+        text-align: center;
+        background: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .upload-zone:hover {
+        background: #e9ecef;
+        border-color: #667eea;
+    }
+    .result-box {
+        border-radius: 12px;
+        padding: 25px;
+        margin-top: 20px;
+    }
+    .explainability-box {
+        background: #f8f9fa;
+        border-left: 4px solid #4A90E2;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 15px;
+    }
+    .score-meter {
+        height: 30px;
+        border-radius: 15px;
+        background: #e9ecef;
+        overflow: hidden;
+        position: relative;
+    }
+    .score-fill {
+        height: 100%;
+        transition: width 0.5s;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <h2 class="mb-4"><i class="bi bi-upload"></i> Upload & Test Image Scanning</h2>
+    
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle"></i> <strong>Test Environment:</strong> This is for demonstration purposes only. All scans are logged but images are processed in memory and not permanently stored.
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="upload-zone" id="uploadZone">
+                <i class="bi bi-cloud-upload display-1 text-primary"></i>
+                <h5 class="mt-3">Click to Select Image</h5>
+                <p class="text-muted">or drag and drop here</p>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            </div>
+            
+            <div id="imagePreview" class="mt-3 text-center" style="display: none;">
+                <img id="previewImg" class="img-fluid rounded" style="max-height: 300px;">
+                <button class="btn btn-primary mt-3" id="scanBtn">
+                    <i class="bi bi-search"></i> Scan Image
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div id="resultsPanel" style="display: none;">
+                <div id="resultBox" class="result-box">
+                    <h4>Scan Results</h4>
+                    <div id="decisionBadge"></div>
+                    <div id="summary" class="mt-3"></div>
+                    
+                    <div class="explainability-box">
+                        <h6><i class="bi bi-info-circle"></i> Explainability & Evidence</h6>
+                        <div id="methodsUsed"></div>
+                        <div id="evidenceDetails"></div>
+                        <div id="thresholdsUsed"></div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <strong>Recommended Action:</strong>
+                        <p id="actionText" class="mt-2"></p>
+                    </div>
+                    
+                    <div class="mt-3 small text-muted">
+                        <i class="bi bi-clock"></i> <span id="timestamp"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const uploadZone = document.getElementById('uploadZone');
+const imageInput = document.getElementById('imageInput');
+const imagePreview = document.getElementById('imagePreview');
+const previewImg = document.getElementById('previewImg');
+const scanBtn = document.getElementById('scanBtn');
+const resultsPanel = document.getElementById('resultsPanel');
+
+uploadZone.onclick = () => imageInput.click();
+
+imageInput.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            imagePreview.style.display = 'block';
+            resultsPanel.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
+scanBtn.onclick = async () => {
+    const file = imageInput.files[0];
+    if (!file) return;
+    
+    scanBtn.disabled = true;
+    scanBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Scanning...';
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    try {
+        const response = await fetch('/scan', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        displayResults(result);
+    } catch (error) {
+        alert('Error scanning image: ' + error.message);
+    } finally {
+        scanBtn.disabled = false;
+        scanBtn.innerHTML = '<i class="bi bi-search"></i> Scan Image';
+    }
+};
+
+function displayResults(result) {
+    resultsPanel.style.display = 'block';
+    
+    const decisionColors = {
+        'safe': 'success',
+        'suspect': 'warning',
+        'harmful': 'danger'
+    };
+    
+    const color = decisionColors[result.decision] || 'secondary';
+    document.getElementById('resultBox').className = `result-box border border-${color}`;
+    
+    document.getElementById('decisionBadge').innerHTML = `
+        <span class="badge bg-${color} badge-custom">
+            <i class="bi bi-${result.decision === 'safe' ? 'check-circle' : 'exclamation-triangle'}"></i>
+            Decision: ${result.decision.toUpperCase()}
+        </span>
+    `;
+    
+    document.getElementById('summary').innerHTML = `
+        <p><strong>Reason:</strong> ${result.reason || 'No specific concerns detected'}</p>
+    `;
+    
+    document.getElementById('methodsUsed').innerHTML = `
+        <p><strong>Detection Methods Used:</strong> ${result.methods.join(', ')}</p>
+    `;
+    
+    let evidenceHTML = '<div class="mt-2"><strong>Evidence & Confidence Scores:</strong></div>';
+    
+    if (result.evidence.nudenet) {
+        const unsafe = result.evidence.nudenet.unsafe;
+        evidenceHTML += `
+            <div class="mt-2">
+                <small>NudeNet Unsafe Score: ${(unsafe * 100).toFixed(2)}%</small>
+                <div class="score-meter">
+                    <div class="score-fill bg-${unsafe > 0.55 ? 'danger' : unsafe > 0.30 ? 'warning' : 'success'}" 
+                         style="width: ${unsafe * 100}%"></div>
+                </div>
+            </div>
+        `;
+    }
+    
+    if (result.evidence.sightengine) {
+        const combined = result.evidence.sightengine.combined_score;
+        evidenceHTML += `
+            <div class="mt-2">
+                <small>Sightengine Combined Score: ${(combined * 100).toFixed(2)}%</small>
+                <div class="score-meter">
+                    <div class="score-fill bg-${combined > 0.6 ? 'danger' : combined > 0.35 ? 'warning' : 'success'}" 
+                         style="width: ${combined * 100}%"></div>
+                </div>
+            </div>
+        `;
+    }
+    
+    if (result.evidence.skin_heuristic) {
+        evidenceHTML += `
+            <div class="mt-2 small text-muted">
+                <i class="bi bi-info-circle"></i> Skin heuristic: ${(result.evidence.skin_heuristic.skin_percentage * 100).toFixed(2)}%
+                (${result.evidence.skin_heuristic.note})
+            </div>
+        `;
+    }
+    
+    document.getElementById('evidenceDetails').innerHTML = evidenceHTML;
+    
+    document.getElementById('thresholdsUsed').innerHTML = `
+        <div class="mt-3 small">
+            <strong>Thresholds Used:</strong><br>
+            NudeNet: Harmful > ${result.thresholds_used.nudenet_harmful}, Suspect > ${result.thresholds_used.nudenet_suspect}<br>
+            Sightengine: Harmful > ${result.thresholds_used.sightengine_harmful}, Suspect > ${result.thresholds_used.sightengine_suspect}
+        </div>
+    `;
+    
+    const actionIcons = {
+        'allow': 'check-circle',
+        'send_to_admin_review': 'flag',
+        'block_and_send_to_admin_review': 'shield-exclamation'
+    };
+    
+    document.getElementById('actionText').innerHTML = `
+        <span class="badge bg-${color}">
+            <i class="bi bi-${actionIcons[result.action]}"></i> ${result.action.replace(/_/g, ' ').toUpperCase()}
+        </span>
+    `;
+    
+    const date = new Date(result.timestamp * 1000);
+    document.getElementById('timestamp').textContent = date.toLocaleString();
+    
+    resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+{% endblock %}
