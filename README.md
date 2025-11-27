@@ -115,6 +115,9 @@ curl -F "image=@test.jpg" http://localhost:5000/scan
 
 ## Performance Metrics
 
+<img src="images/img1.png" width="55%"> <img src="images/img2.png" width="55%">
+<img src="images/img3.png" width="55%">
+
 Based on testing with 1,500 images:
 - **Overall Accuracy:** 92.4%
 - **Precision:** 89.7%
