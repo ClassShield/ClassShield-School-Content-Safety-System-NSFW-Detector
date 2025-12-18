@@ -9,7 +9,7 @@
 
 ## Overview
 
-
+<img src="images/unnamed.jpg">
 
 ClassShield (Powered By AnveshAI) is a demonstration prototype that showcases responsible AI implementation for content moderation in schools. The system uses a three-tier detection approach (local ML model, cloud API fallback, and heuristic) to identify potentially inappropriate images while prioritizing student privacy, human oversight, and transparency.
 
