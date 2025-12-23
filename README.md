@@ -156,6 +156,8 @@ Complete documentation available in the web interface:
 - `/demo-plan` - Demo Video Plan
 - `/submission` - Submission Package
 
+Zenodo:- [Click Here!](https://zenodo.org/records/18035342)
+
 ## Project Structure
 
 ```
