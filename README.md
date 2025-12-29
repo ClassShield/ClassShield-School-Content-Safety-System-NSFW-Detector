@@ -189,6 +189,11 @@ For questions about this project or implementation guidance, please refer to the
 
 ## Acknowledgments
 
+
+<img src="https://avatars.githubusercontent.com/u/202682181?v=4" width="25%">
+
+**ClassShield is founded and developed by [Anvesh Raman](https://github.com/developeranveshraman)**
+
 - NudeNet for local ML model capabilities
 - Sightengine for cloud API fallback services
 - Ethical AI research community for guidance on responsible implementation
